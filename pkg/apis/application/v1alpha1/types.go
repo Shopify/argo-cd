@@ -1347,7 +1347,7 @@ type AWSAuthConfig struct {
 
 // GCPAuthConfig is a GCP IAM authentication configuration
 type GCPAuthConfig struct {
-	Kubconfig []byte `json:"kubconfig,omitempty" protobuf:"bytes,1,opt,name=kubeconfig"`
+	Kubeconfig []byte `json:"kubconfig,omitempty" protobuf:"bytes,1,opt,name=kubeconfig"`
 }
 
 // ExecProviderConfig is config used to call an external command to perform cluster authentication
@@ -1389,6 +1389,9 @@ type ClusterConfig struct {
 
 	// ExecProviderConfig contains configuration for an exec provider
 	ExecProviderConfig *ExecProviderConfig `json:"execProviderConfig,omitempty" protobuf:"bytes,6,opt,name=execProviderConfig"`
+
+	// GCPAuthConfig contains IAM authentication configuration
+	GCPAuthConfig *GCPAuthConfig `json:"gcpAuthConfig,omitempty" protobuf:"bytes,7,opt,name=gcpAuthConfig"`
 }
 
 // TLSClientConfig contains settings to enable transport layer security
