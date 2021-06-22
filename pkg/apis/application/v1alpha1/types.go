@@ -1347,7 +1347,7 @@ type AWSAuthConfig struct {
 
 // GCPAuthConfig is a GCP IAM authentication configuration
 type GCPAuthConfig struct {
-	Kubconfig []byte `json:"kubconfig,omitempty" protobuf:"bytes,1,opt,name=kubeconfig"`
+	Kubeconfig []byte `json:"kubconfig,omitempty" protobuf:"bytes,1,opt,name=kubeconfig"`
 }
 
 // ExecProviderConfig is config used to call an external command to perform cluster authentication
@@ -1389,6 +1389,9 @@ type ClusterConfig struct {
 
 	// ExecProviderConfig contains configuration for an exec provider
 	ExecProviderConfig *ExecProviderConfig `json:"execProviderConfig,omitempty" protobuf:"bytes,6,opt,name=execProviderConfig"`
+
+	// GCPAuthConfig contains IAM authentication configuration
+	GCPAuthConfig *GCPAuthConfig `json:"gcpAuthConfig,omitempty" protobuf:"bytes,7,opt,name=gcpAuthConfig"`
 }
 
 // TLSClientConfig contains settings to enable transport layer security
@@ -2336,7 +2339,7 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 			if err != nil {
 				panic(err)
 			}
-			config, err = clientcmd.NewNonInteractiveDeferredLoadingClientConfig(cfg, &clientcmd.ConfigOverrides{CurrentContext: c.Name}).ClientConfig()
+			config, err = clientcmd.NewNonInteractiveClientConfig(*cfg, c.Name, &clientcmd.ConfigOverrides{CurrentContext: c.Name}, nil).ClientConfig()
 		} else if c.Config.ExecProviderConfig != nil {
 			var env []api.ExecEnvVar
 			if c.Config.ExecProviderConfig.Env != nil {
