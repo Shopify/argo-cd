@@ -1345,6 +1345,11 @@ type AWSAuthConfig struct {
 	RoleARN string `json:"roleARN,omitempty" protobuf:"bytes,2,opt,name=roleARN"`
 }
 
+// GCPAuthConfig is a GCP IAM authentication configuration
+type GCPAuthConfig struct {
+	Kubconfig []byte `json:"kubconfig,omitempty" protobuf:"bytes,1,opt,name=kubeconfig"`
+}
+
 // ExecProviderConfig is config used to call an external command to perform cluster authentication
 // See: https://godoc.org/k8s.io/client-go/tools/clientcmd/api#ExecConfig
 type ExecProviderConfig struct {
@@ -2326,6 +2331,12 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 					Args:       args,
 				},
 			}
+		} else if c.Config.GCPAuthConfig != nil {
+			cfg, err := clientcmd.Load(c.Config.GCPAuthConfig.Kubeconfig)
+			if err != nil {
+				panic(err)
+			}
+			config, err = clientcmd.NewNonInteractiveDeferredLoadingClientConfig(cfg, &clientcmd.ConfigOverrides{CurrentContext: c.Name}).ClientConfig()
 		} else if c.Config.ExecProviderConfig != nil {
 			var env []api.ExecEnvVar
 			if c.Config.ExecProviderConfig.Env != nil {

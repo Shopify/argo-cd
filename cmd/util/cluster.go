@@ -55,7 +55,7 @@ func PrintKubeContexts(ca clientcmd.ConfigAccess) {
 	}
 }
 
-func NewCluster(name string, namespaces []string, conf *rest.Config, managerBearerToken string, awsAuthConf *argoappv1.AWSAuthConfig, execProviderConf *argoappv1.ExecProviderConfig) *argoappv1.Cluster {
+func NewCluster(name string, namespaces []string, conf *rest.Config, managerBearerToken string, awsAuthConf *argoappv1.AWSAuthConfig, gcpAuthConf *argoappv1.GCPAuthConfig, execProviderConf *argoappv1.ExecProviderConfig) *argoappv1.Cluster {
 	tlsClientConfig := argoappv1.TLSClientConfig{
 		Insecure:   conf.TLSClientConfig.Insecure,
 		ServerName: conf.TLSClientConfig.ServerName,
@@ -86,6 +86,7 @@ func NewCluster(name string, namespaces []string, conf *rest.Config, managerBear
 		Config: argoappv1.ClusterConfig{
 			TLSClientConfig:    tlsClientConfig,
 			AWSAuthConfig:      awsAuthConf,
+			GCPAuthConfig:      gcpAuthConf,
 			ExecProviderConfig: execProviderConf,
 		},
 	}
@@ -106,6 +107,7 @@ type ClusterOptions struct {
 	ServiceAccount          string
 	AwsRoleArn              string
 	AwsClusterName          string
+	GcpAuthConfig           bool
 	SystemNamespace         string
 	Namespaces              []string
 	Name                    string
@@ -121,6 +123,7 @@ func AddClusterFlags(command *cobra.Command, opts *ClusterOptions) {
 	command.Flags().BoolVar(&opts.InCluster, "in-cluster", false, "Indicates Argo CD resides inside this cluster and should connect using the internal k8s hostname (kubernetes.default.svc)")
 	command.Flags().StringVar(&opts.AwsClusterName, "aws-cluster-name", "", "AWS Cluster name if set then aws cli eks token command will be used to access cluster")
 	command.Flags().StringVar(&opts.AwsRoleArn, "aws-role-arn", "", "Optional AWS role arn. If set then AWS IAM Authenticator assumes a role to perform cluster operations instead of the default AWS credential provider chain.")
+	command.Flags().BoolVar(&opts.GcpAuthConfig, "gcp-auth-config", false, "")
 	command.Flags().StringArrayVar(&opts.Namespaces, "namespace", nil, "List of namespaces which are allowed to manage")
 	command.Flags().StringVar(&opts.Name, "name", "", "Overwrite the cluster name")
 	command.Flags().Int64Var(&opts.Shard, "shard", -1, "Cluster shard number; inferred from hostname if not set")
