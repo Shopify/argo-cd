@@ -1,0 +1,14 @@
+containers:
+  argo-cd:
+    environment: production
+    application: argo-cd
+    build:
+      command: pipa build -x --push -- /buildkite/pipelines/dockerfile/run.sh
+      env:
+        PIPA_TAG_BRANCH: 'true'
+        PIPA_PIPELINE_TEMPLATE: dockerfile
+        PIPA_DOCKERFILE: Dockerfile
+        DOCKER_BUILDKIT: 'true'
+        PIPA_DOCKER_CACHE_FROM_BRANCH: 'true'
+steps:
+  - build: argo-cd
