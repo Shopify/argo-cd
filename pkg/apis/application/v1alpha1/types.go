@@ -2339,7 +2339,7 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 			if err != nil {
 				panic(err)
 			}
-			config, err = clientcmd.NewNonInteractiveDeferredLoadingClientConfig(cfg, &clientcmd.ConfigOverrides{CurrentContext: c.Name}).ClientConfig()
+			config, err = clientcmd.NewNonInteractiveClientConfig(*cfg, c.Name, &clientcmd.ConfigOverrides{CurrentContext: c.Name}, nil).ClientConfig()
 		} else if c.Config.ExecProviderConfig != nil {
 			var env []api.ExecEnvVar
 			if c.Config.ExecProviderConfig.Env != nil {

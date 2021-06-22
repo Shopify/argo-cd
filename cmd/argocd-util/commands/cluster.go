@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"os"
 	"text/tabwriter"
@@ -292,11 +293,21 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			kubeClientset := fake.NewSimpleClientset()
 
 			var awsAuthConf *argoappv1.AWSAuthConfig
+			var gcpAuthConf *argoappv1.GCPAuthConfig
 			var execProviderConf *argoappv1.ExecProviderConfig
 			if clusterOpts.AwsClusterName != "" {
 				awsAuthConf = &argoappv1.AWSAuthConfig{
 					ClusterName: clusterOpts.AwsClusterName,
 					RoleARN:     clusterOpts.AwsRoleArn,
+				}
+			} else if clusterOpts.GcpAuthConfig {
+				confPath, exists := os.LookupEnv("KUBECONFIG")
+				if exists {
+					gcpAuthConf.Kubeconfig, err = ioutil.ReadFile(confPath)
+					errors.CheckError(err)
+				} else {
+					// clientcmd.Default
+					// filepath.Join(os.Getenv("HOME"), ".kube", "config")
 				}
 			} else if clusterOpts.ExecProviderCommand != "" {
 				execProviderConf = &argoappv1.ExecProviderConfig{
@@ -315,7 +326,7 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 			if clusterOpts.Name != "" {
 				contextName = clusterOpts.Name
 			}
-			clst := cmdutil.NewCluster(contextName, clusterOpts.Namespaces, conf, bearerToken, awsAuthConf, execProviderConf)
+			clst := cmdutil.NewCluster(contextName, clusterOpts.Namespaces, conf, bearerToken, awsAuthConf, gcpAuthConf, execProviderConf)
 			if clusterOpts.InCluster {
 				clst.Server = argoappv1.KubernetesInternalAPIServerAddr
 			}
