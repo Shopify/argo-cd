@@ -539,6 +539,11 @@ message ExecProviderConfig {
   optional string installHint = 5;
 }
 
+// GCPAuthConfig is a GCP IAM authentication configuration
+message GCPAuthConfig {
+  optional bytes kubeconfig = 1;
+}
+
 // GnuPGPublicKey is a representation of a GnuPG public key
 message GnuPGPublicKey {
   // KeyID specifies the key ID, in hexadecimal string format
