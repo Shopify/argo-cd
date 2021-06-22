@@ -438,6 +438,9 @@ message ClusterConfig {
 
   // ExecProviderConfig contains configuration for an exec provider
   optional ExecProviderConfig execProviderConfig = 6;
+
+  // GCPAuthConfig contains IAM authentication configuration
+  optional GCPAuthConfig gcpAuthConfig = 7;
 }
 
 // ClusterInfo contains information about the cluster
