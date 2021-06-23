@@ -1913,7 +1913,7 @@ func schema_pkg_apis_application_v1alpha1_GCPAuthConfig(ref common.ReferenceCall
 				Description: "GCPAuthConfig is a GCP IAM authentication configuration",
 				Type:        []string{"object"},
 				Properties: map[string]spec.Schema{
-					"kubconfig": {
+					"kubeconfig": {
 						SchemaProps: spec.SchemaProps{
 							Type:   []string{"string"},
 							Format: "byte",
