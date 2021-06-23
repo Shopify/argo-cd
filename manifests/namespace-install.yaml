@@ -439,7 +439,7 @@ spec:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/gcloud/key
-        image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
+        image: gcr.io/shopify-docker-images/apps/production/argo-cd:30b14e8af370746cc79887e31a2fa9f84a509791
         imagePullPolicy: Always
         name: copyutil
         volumeMounts:
@@ -622,7 +622,7 @@ spec:
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/gcloud/key
-        image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
+        image: gcr.io/shopify-docker-images/apps/production/argo-cd:30b14e8af370746cc79887e31a2fa9f84a509791
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -871,7 +871,7 @@ spec:
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/gcloud/key
-        image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
+        image: gcr.io/shopify-docker-images/apps/production/argo-cd:30b14e8af370746cc79887e31a2fa9f84a509791
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -1069,7 +1069,7 @@ spec:
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/gcloud/key
-        image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
+        image: gcr.io/shopify-docker-images/apps/production/argo-cd:30b14e8af370746cc79887e31a2fa9f84a509791
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
