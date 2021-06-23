@@ -436,6 +436,12 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /shared/argocd-dex
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: service-account-key
+              key: key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         name: copyutil
@@ -611,6 +617,11 @@ spec:
               key: reposerver.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: service-account-key
+              key: key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
@@ -852,6 +863,11 @@ spec:
               key: server.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: service-account-key
+              key: key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
@@ -1042,6 +1058,11 @@ spec:
               key: controller.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: service-account-key
+              key: key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
