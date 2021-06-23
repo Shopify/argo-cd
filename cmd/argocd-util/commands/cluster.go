@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"path/filepath"
 	"text/tabwriter"
 	"time"
 
@@ -306,8 +307,8 @@ func NewGenClusterConfigCommand(pathOpts *clientcmd.PathOptions) *cobra.Command 
 					gcpAuthConf.Kubeconfig, err = ioutil.ReadFile(confPath)
 					errors.CheckError(err)
 				} else {
-					// clientcmd.Default
-					// filepath.Join(os.Getenv("HOME"), ".kube", "config")
+					gcpAuthConf.Kubeconfig, err = ioutil.ReadFile(filepath.Join(os.Getenv("HOME"), ".kube", "config"))
+					errors.CheckError(err)
 				}
 			} else if clusterOpts.ExecProviderCommand != "" {
 				execProviderConf = &argoappv1.ExecProviderConfig{

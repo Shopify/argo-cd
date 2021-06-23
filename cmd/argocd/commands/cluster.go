@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/tabwriter"
 
@@ -107,12 +108,13 @@ func NewClusterAddCommand(clientOpts *argocdclient.ClientOptions, pathOpts *clie
 				}
 			} else if clusterOpts.GcpAuthConfig {
 				confPath, exists := os.LookupEnv("KUBECONFIG")
+				gcpAuthConf = &argoappv1.GCPAuthConfig{}
 				if exists {
 					gcpAuthConf.Kubeconfig, err = ioutil.ReadFile(confPath)
 					errors.CheckError(err)
 				} else {
-					// clientcmd.Default
-					// filepath.Join(os.Getenv("HOME"), ".kube", "config")
+					gcpAuthConf.Kubeconfig, err = ioutil.ReadFile(filepath.Join(os.Getenv("HOME"), ".kube", "config"))
+					errors.CheckError(err)
 				}
 			} else if clusterOpts.ExecProviderCommand != "" {
 				execProviderConf = &argoappv1.ExecProviderConfig{
