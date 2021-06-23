@@ -438,10 +438,7 @@ spec:
         - /shared/argocd-dex
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: service-account-key
-              key: key
+          value: /var/run/gcloud/key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         name: copyutil
@@ -450,12 +447,18 @@ spec:
           name: static-files
         - mountPath: /tmp
           name: dexconfig
+        - name: google-service-account
+          mountPath: "/var/run/gcloud"
+          readOnly: true
       serviceAccountName: argocd-dex-server
       volumes:
       - emptyDir: {}
         name: static-files
       - emptyDir: {}
         name: dexconfig
+      - name: google-service-account
+        secret:
+          secretName: service-account-key
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -618,10 +621,7 @@ spec:
               name: argocd-cmd-params-cm
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: service-account-key
-              key: key
+          value: /var/run/gcloud/key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
@@ -661,6 +661,9 @@ spec:
           name: argocd-repo-server-tls
         - mountPath: /tmp
           name: tmp
+        - name: google-service-account
+          mountPath: "/var/run/gcloud"
+          readOnly: true
       volumes:
       - configMap:
           name: argocd-ssh-known-hosts-cm
@@ -686,6 +689,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - name: google-service-account
+        secret:
+          secretName: service-account-key
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -864,10 +870,7 @@ spec:
               name: argocd-cmd-params-cm
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: service-account-key
-              key: key
+          value: /var/run/gcloud/key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
@@ -904,6 +907,9 @@ spec:
           name: plugins-home
         - mountPath: /tmp
           name: tmp
+        - name: google-service-account
+          mountPath: "/var/run/gcloud"
+          readOnly: true
       serviceAccountName: argocd-server
       volumes:
       - emptyDir: {}
@@ -929,6 +935,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - name: google-service-account
+        secret:
+          secretName: service-account-key
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -1059,10 +1068,7 @@ spec:
               name: argocd-cmd-params-cm
               optional: true
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: service-account-key
-              key: key
+          value: /var/run/gcloud/key
         image: gcr.io/shopify-docker-images/apps/production/argo-cd:0dca7af1cb7f1af84c5d2ec6c8ece9062fa8957a
         imagePullPolicy: Always
         livenessProbe:
@@ -1090,6 +1096,9 @@ spec:
         volumeMounts:
         - mountPath: /app/config/controller/tls
           name: argocd-repo-server-tls
+        - name: google-service-account
+          mountPath: "/var/run/gcloud"
+          readOnly: true
       serviceAccountName: argocd-application-controller
       volumes:
       - name: argocd-repo-server-tls
@@ -1103,6 +1112,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - name: google-service-account
+        secret:
+          secretName: service-account-key
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
