@@ -1099,8 +1099,16 @@ spec:
         - name: google-service-account
           mountPath: "/var/run/gcloud"
           readOnly: true
+        - mountPath: /home/argocd
+          name: argocd-home
+        - name: google-service-account
+          mountPath: "/var/run/gcloud"
+          readOnly: true
+        workingDir: /home/argocd
       serviceAccountName: argocd-application-controller
       volumes:
+      - emptyDir: {}
+        name: argocd-home
       - name: argocd-repo-server-tls
         secret:
           items:
@@ -1151,7 +1159,7 @@ spec:
     - namespaceSelector: {}
     ports:
     - port: 5558
-    - protocol: TCP
+      protocol: TCP
   podSelector:
     matchLabels:
       app.kubernetes.io/name: argocd-dex-server
