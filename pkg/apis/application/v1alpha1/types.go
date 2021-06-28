@@ -2380,6 +2380,11 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 // RESTConfig returns a go-client REST config from cluster with tuned throttling and HTTP client settings.
 func (c *Cluster) RESTConfig() *rest.Config {
 	config := c.RawRestConfig()
+
+	if c.Config.GCPAuthConfig != nil {
+		return config
+	}
+
 	err := SetK8SConfigDefaults(config)
 	if err != nil {
 		panic(fmt.Sprintf("Unable to apply K8s REST config defaults: %v", err))
