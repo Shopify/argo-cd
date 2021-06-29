@@ -17,6 +17,7 @@ import (
 
 	"github.com/argoproj/gitops-engine/pkg/health"
 	synccommon "github.com/argoproj/gitops-engine/pkg/sync/common"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/ghodss/yaml"
 	"github.com/robfig/cron"
 	"google.golang.org/grpc/codes"
@@ -2380,6 +2381,8 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 // RESTConfig returns a go-client REST config from cluster with tuned throttling and HTTP client settings.
 func (c *Cluster) RESTConfig() *rest.Config {
 	config := c.RawRestConfig()
+
+	spew.Dump(config)
 
 	if c.Config.GCPAuthConfig != nil {
 		return config

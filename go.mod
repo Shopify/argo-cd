@@ -14,6 +14,7 @@ require (
 	github.com/casbin/casbin v1.9.1
 	github.com/chai2010/gettext-go v0.0.0-20170215093142-bf70f2a70fb1 // indirect
 	github.com/coreos/go-oidc v2.1.0+incompatible
+	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/dustin/go-humanize v1.0.0
 	github.com/evanphx/json-patch v4.9.0+incompatible
